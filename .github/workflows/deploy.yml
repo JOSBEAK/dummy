@@ -18,8 +18,14 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             bash -lc '
+              export NVM_DIR="$HOME/.nvm"
+              source $NVM_DIR/nvm.sh
+              nvm use --lts
+
               cd /home/ubuntu/dummy
               git pull origin main
+
               npm install
               pm2 reload app || pm2 start npm --name "app" -- start
+              pm2 save
             '
